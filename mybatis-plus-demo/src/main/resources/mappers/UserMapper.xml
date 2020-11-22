@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pys.mapper.UserOrderMapper">
+
+
+  <select id="selectUserOrder" parameterType="int" resultType="cn.pys.vo.UserOrderVO">
+    SELECT b.user_id,b.name,c.goods_id,c.goods_name,a.deal_num FROM t_order a ,t_user b,t_goods c
+    WHERE a.user_id=b.user_id and a.goods_id=c.goods_id
+    and a.user_id=#{userId,jdbcType=INTEGER};
+  </select>
+
+</mapper>
