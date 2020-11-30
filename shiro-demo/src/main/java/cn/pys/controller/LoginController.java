@@ -1,5 +1,6 @@
 package cn.pys.controller;
 
+import cn.pys.service.PasswordHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -9,6 +10,7 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class LoginController {
 
+    @Autowired
+    private PasswordHelper passwordHelper;
+
     /**
      * http://localhost:8080/login?userName=zhangsan&password=123456
      * http://localhost:8080/login?userName=wsl&password=123456
+     *
      * @param userName
      * @param password
      * @return
@@ -31,7 +37,7 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
                 userName,
-                password
+                passwordHelper.encryptPassword(password, userName)
         );
         try {
             //进行验证，这里可以捕获异常，然后返回对应信息
