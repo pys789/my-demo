@@ -7,7 +7,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.pys.mapper.PostMapper;
 import cn.pys.model.Post;
 import cn.pys.service.PostService;
-import cn.pys.utils.RedisUtil;
+import cn.pys.utils.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class PostServiceImpl implements PostService {
     private PostMapper postMapper;
 
     @Autowired
-    RedisUtil redisUtil;
+    JedisUtil redisUtil;
 
     @Override
     public void initIndexWeekRank() {

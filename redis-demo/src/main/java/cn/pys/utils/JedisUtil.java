@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class RedisUtil {
+public class JedisUtil {
 
     @Autowired
     private JedisPool jedisPool;

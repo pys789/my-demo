@@ -20,7 +20,7 @@ import java.util.Map;
 @PropertySource("classpath:redis.properties")
 @Slf4j
 @EnableCaching
-public class RedisConfig {
+public class JedisConfig {
 
     @Value("${spring.redis.host}")
     private String host;
