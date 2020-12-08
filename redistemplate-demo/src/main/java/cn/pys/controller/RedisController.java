@@ -43,7 +43,8 @@ public class RedisController {
 
     @GetMapping("/get/{userId}")
     public User getUser(@PathVariable(name = "userId") Integer userId) {
-        return userService.getUserById(userId);
+        User user = userService.getUserById(userId);
+        return user;
     }
 
     @GetMapping("/getAll")
