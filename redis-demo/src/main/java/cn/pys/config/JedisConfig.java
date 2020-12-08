@@ -19,7 +19,6 @@ import java.util.Map;
 @Component
 @PropertySource("classpath:redis.properties")
 @Slf4j
-@EnableCaching
 public class JedisConfig {
 
     @Value("${spring.redis.host}")
