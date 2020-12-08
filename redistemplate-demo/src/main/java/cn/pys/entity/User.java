@@ -1,5 +1,6 @@
 package cn.pys.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.redis.core.index.Indexed;
@@ -11,8 +12,7 @@ import javax.persistence.*;
  * @Date 2020/12/8 15:12
  * @Created by pengys
  */
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name="t_user")
 public class User {

@@ -5,12 +5,10 @@ import cn.pys.service.UserService;
 import cn.pys.utils.RedisTemplateUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/test")
@@ -29,9 +27,28 @@ public class RedisController {
     }
 
     @GetMapping("/save/{userId}")
-    public String saveUser(@PathVariable(name = "userId") Integer userId) {
-        User user = userService.saveUser(userId, "test" + userId);
-        return user == null ? "" : JSONObject.toJSONString(user);
+    public User saveUser(@PathVariable(name = "userId") Integer userId) {
+        return userService.saveUser(userId, "test" + userId);
+    }
+
+    @GetMapping("/delete/{userId}")
+    public int delete(@PathVariable(name = "userId") Integer userId) {
+        return userService.deleteUser(userId);
+    }
+
+    @GetMapping("/update/{userId}")
+    public Integer updateUser(@PathVariable(name = "userId") Integer userId, @RequestParam(value = "name") String name) {
+        return userService.updateByUserId(userId, name);
+    }
+
+    @GetMapping("/get/{userId}")
+    public User getUser(@PathVariable(name = "userId") Integer userId) {
+        return userService.getUserById(userId);
+    }
+
+    @GetMapping("/getAll")
+    public List<User> getAllUser() {
+        return userService.getAll();
     }
 
 
