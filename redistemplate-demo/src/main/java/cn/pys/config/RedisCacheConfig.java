@@ -1,5 +1,6 @@
 package cn.pys.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.*;
@@ -23,12 +24,13 @@ import java.time.Duration;
  * @Created by pengys
  */
 @Configuration
+@Slf4j
 public class RedisCacheConfig extends CachingConfigurerSupport {
     @Resource
     private RedisConnectionFactory factory;
 
     /**
-     * 自定义生成redis-key
+     * 自定义生成redis-key,没有定义key时使用这个方法生成key
      *
      * @return
      */
@@ -42,7 +44,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
             for (Object obj : objects) {
                 sb.append(obj.toString());
             }
-            System.out.println("keyGenerator=" + sb.toString());
+            log.info("keyGenerator=" + sb.toString());
             return sb.toString();
         };
     }
@@ -78,7 +80,10 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
                         .disableCachingNullValues()
                         .entryTtl(Duration.ofSeconds(30))
                         .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-        return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
+        return RedisCacheManager.builder(factory)
+                .cacheDefaults(cacheConfiguration)
+                // 指定key的缓存配置 .withCacheConfiguration("user_1",cacheConfiguration)
+                .build();
 
     }
 }

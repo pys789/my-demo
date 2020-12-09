@@ -50,7 +50,7 @@ public class UserService {
         return userRepository.findByUserId(userId);
     }
 
-    @Cacheable(value = "users",unless = "#result==null")
+    @Cacheable(value = "users",unless = "#result==null", key = "'allUsers'")
     public List<User> getAll() {
         log.info("进入getAll方法");
         return userRepository.findAll();
