@@ -3,7 +3,10 @@ package cn.pys.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.interceptor.*;
+import org.springframework.cache.interceptor.CacheErrorHandler;
+import org.springframework.cache.interceptor.CacheResolver;
+import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.cache.interceptor.SimpleCacheResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -31,8 +34,6 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 
     /**
      * 自定义生成redis-key,没有定义key时使用这个方法生成key
-     *
-     * @return
      */
     @Override
     @Bean
@@ -62,6 +63,15 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
     @Override
     public CacheResolver cacheResolver() {
+       /* // 通过Guava实现的自定义堆内存缓存管理器
+        CacheManager guavaCacheManager = new GuavaCacheManager();
+        CacheManager redisCacheManager = redisCacheManager();
+        List<CacheManager> list = new ArrayList<>();
+        // 优先读取堆内存缓存
+        list.add(guavaCacheManager);
+        // 堆内存缓存读取不到该key时再读取redis缓存
+        list.add(redisCacheManager);
+        return new CustomCacheResolver(list);*/
         return new SimpleCacheResolver(cacheManager());
     }
 
@@ -69,7 +79,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Override
     public CacheErrorHandler errorHandler() {
         // 用于捕获从Cache中进行CRUD时的异常的回调处理器。
-        return new SimpleCacheErrorHandler();
+        return new IgnoreExceptionCacheErrorHandler();
     }
 
     @Bean
