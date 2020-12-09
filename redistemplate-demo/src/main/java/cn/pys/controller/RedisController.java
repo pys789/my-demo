@@ -4,6 +4,8 @@ import cn.pys.entity.User;
 import cn.pys.service.UserService;
 import cn.pys.utils.RedisTemplateUtil;
 import com.alibaba.fastjson.JSONObject;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,11 @@ public class RedisController {
 
     @Resource
     UserService userService;
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    private static int count = 0;
 
     @RequestMapping("/hello")
     public String hello() {
@@ -50,6 +57,23 @@ public class RedisController {
     @GetMapping("/getAll")
     public List<User> getAllUser() {
         return userService.getAll();
+    }
+
+
+    /**
+     * 使用redisson实现分布式锁
+     */
+    @GetMapping("/count")
+    public String count() {
+        RLock lock = redissonClient.getLock("count");
+        lock.lock();
+        try {
+            count++;
+            System.out.println(Thread.currentThread().getName() + "------>" + count);
+        } finally {
+            lock.unlock();
+        }
+        return "OK";
     }
 
 
