@@ -85,6 +85,14 @@ public class RedisTemplateUtil {
         redisTemplate.opsForValue().set(key, value, time, type);
     }
 
+    public Boolean setIfAbsent(String key, Object value, long time, TimeUnit type) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value, time, type);
+    }
+
+    public Boolean setIfPresent(String key, Object value, long time, TimeUnit type) {
+        return redisTemplate.opsForValue().setIfPresent(key, value, time, type);
+    }
+
     /**
      * 如果 key 存在则覆盖,并返回旧值.
      * 如果不存在,返回null 并添加
