@@ -2,21 +2,18 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>参数</title>
-    <!-- 加载Query文件-->
+    <title>抢红包</title>
     <script type="text/javascript" src="js/jquery-3.5.1.js">
     </script>
     <script type="text/javascript">
         function start() {
-            var max = 3;
             for (var i = 1; i <= 3; i++) {
                 $.post({
                     //请求抢id为1的红包
                     url: "./redpacket/grap?redPacketId=1&userId=" + i,
-                    //成功后的方法
                     success: function (result) {
                         if(result.success){
-                            document.write(result.userId+"抢到了红包！" + "</br>");
+                            $("#showResult").append(result.userId+"抢到了红包！\n")
                         }
                     }
                 });
@@ -27,6 +24,7 @@
 <body>
 <h3>先在redis中添加红包</h3>
 <h3>例如：HMSET red_packet_1 stock 20 unit_amount 10</h3>
-<button type="button" onclick="start()">开始抢红包</button>
+<button type="button" onclick="start()">开始抢红包</button><br>
+<textarea id="showResult" cols="20" rows="10" placeholder="抢红包结果" style="margin-top: 10px;"></textarea>
 </body>
 </html>
