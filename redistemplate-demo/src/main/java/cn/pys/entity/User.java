@@ -1,11 +1,10 @@
 package cn.pys.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Description
@@ -15,8 +14,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name="t_user")
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = -5081844604679854080L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

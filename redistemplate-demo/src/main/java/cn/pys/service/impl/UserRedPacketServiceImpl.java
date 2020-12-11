@@ -3,10 +3,8 @@ package cn.pys.service.impl;
 import cn.pys.service.RedisRedPacketService;
 import cn.pys.service.UserRedPacketService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.ReturnType;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,7 @@ public class UserRedPacketServiceImpl implements UserRedPacketService {
     DefaultRedisScript<String> grapRedPackageRedisScript;
 
     @Override
-    public Long grapRedPacketByRedis(Long redPacketId, Long userId) {
+    public Long grapRedPacketByRedis(Integer redPacketId, Long userId) {
         String args = userId + "-" + System.currentTimeMillis();
         String key = String.valueOf(redPacketId);
 
@@ -36,11 +34,11 @@ public class UserRedPacketServiceImpl implements UserRedPacketService {
                 key.getBytes(),
                 args.getBytes()));
         Long result = (Long) res;
-        if (result == 2) {
+        if (result != null && result == 2) {
             // 红包抢完后，存入mysql
-            //String unitAmountStr = (String) redisTemplate.opsForHash().get("red_packet_" + redPacketId, "unit_amount");
-            //Double unitAmount = Double.valueOf(unitAmountStr);
-            //redisRedPacketService.saveUserRedPacketByRedis(redPacketId, unitAmount);
+            Object unitAmountStr = redisTemplate.opsForHash().get("red_packet_" + redPacketId, "unit_amount");
+            Double unitAmount = Double.valueOf(unitAmountStr == null ? "0" : unitAmountStr.toString());
+            redisRedPacketService.saveUserRedPacketByRedis(redPacketId, unitAmount);
         }
         return result;
     }

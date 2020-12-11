@@ -6,5 +6,5 @@ public interface RedisRedPacketService {
      * @param redPacketId
      * @param unitAmount
      */
-    void saveUserRedPacketByRedis(Long redPacketId, Double unitAmount);
+    void saveUserRedPacketByRedis(Integer redPacketId, Double unitAmount);
 }

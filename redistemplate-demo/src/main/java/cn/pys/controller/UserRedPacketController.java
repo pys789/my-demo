@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class UserRedPacketController {
 
     @RequestMapping("/grap")
     @ResponseBody
-    public Map<String, Object> grapRedPacketByRedis(Long redPacketId, Long userId) {
+    public Map<String, Object> grapRedPacketByRedis(Integer redPacketId, Long userId) {
         Map<String, Object> resultMap = new HashMap<>();
         Long result = userRedPacketService.grapRedPacketByRedis(redPacketId, userId);
         boolean flag = result > 0;
