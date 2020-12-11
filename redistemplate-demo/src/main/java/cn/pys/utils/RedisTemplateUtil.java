@@ -213,7 +213,7 @@ public class RedisTemplateUtil {
      * @param hashKey
      * @param value
      */
-    public void put(String key, String hashKey, String value) {
+    public void put(String key, String hashKey, Object value) {
         redisTemplate.opsForHash().put(key, hashKey, value);
     }
 

@@ -6,7 +6,7 @@ if
 end
    stock =stock-1
    redis.call('hset',redPacket,'stock',tostring(stock))
-   redis.call('rpush',listKey,ARGV[1])
+   redis.call('rpush',listKey,"\"" .. ARGV[1] .. "\"")
 if
     stock==0 then return 2
 end

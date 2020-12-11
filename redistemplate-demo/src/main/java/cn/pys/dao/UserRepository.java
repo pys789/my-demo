@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     int deleteByUserId(Integer userId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE User u SET u.name = :name WHERE u.userId = :userId")
     int updateByUserId(@Param("userId") Integer userId, @Param("name")String name);
 }

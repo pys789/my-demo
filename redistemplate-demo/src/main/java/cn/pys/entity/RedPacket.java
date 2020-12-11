@@ -2,10 +2,7 @@ package cn.pys.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -16,14 +13,16 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "t_red_packet")
-public class RedPacket implements Serializable {
-
-    private static final long serialVersionUID = 1520308802666015024L;
+public class RedPacket{
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private Integer id;
 
     @Column(name = "stock")
     private Integer stock;
+
+    @Column(name = "unit_amount")
+    private Integer unitAmount;
 
 }

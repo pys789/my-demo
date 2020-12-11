@@ -1,5 +1,6 @@
 package cn.pys.service.impl;
 
+import cn.pys.config.Contants;
 import cn.pys.service.RedisRedPacketService;
 import cn.pys.service.UserRedPacketService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class UserRedPacketServiceImpl implements UserRedPacketService {
         Long result = (Long) res;
         if (result != null && result == 2) {
             // 红包抢完后，存入mysql
-            Object unitAmountStr = redisTemplate.opsForHash().get("red_packet_" + redPacketId, "unit_amount");
+            Object unitAmountStr = redisTemplate.opsForHash().get(Contants.RED_PACKET_PREFIX  + redPacketId, "unit_amount");
             Double unitAmount = Double.valueOf(unitAmountStr == null ? "0" : unitAmountStr.toString());
             redisRedPacketService.saveUserRedPacketByRedis(redPacketId, unitAmount);
         }

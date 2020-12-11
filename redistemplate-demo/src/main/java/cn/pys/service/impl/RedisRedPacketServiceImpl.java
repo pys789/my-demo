@@ -1,9 +1,12 @@
 package cn.pys.service.impl;
 
+import cn.pys.config.Contants;
 import cn.pys.dao.RedPacketRepository;
 import cn.pys.dao.UserRedPacketRepository;
+import cn.pys.dao.UserRepository;
 import cn.pys.entity.UserRedPacket;
 import cn.pys.service.RedisRedPacketService;
+import cn.pys.utils.RedisTemplateUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundListOperations;
@@ -21,15 +24,16 @@ import java.util.List;
 @Service
 @Slf4j
 public class RedisRedPacketServiceImpl implements RedisRedPacketService {
-
-    private static final String PREFIX = "red_packet_list_";
     /**
      * 每次取出100条数据
      */
     private static final int TIME_SIZE = 100;
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplateUtil redisTemplateUtil;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Resource
     RedPacketRepository redPacketRepository;
@@ -45,7 +49,7 @@ public class RedisRedPacketServiceImpl implements RedisRedPacketService {
     public void saveUserRedPacketByRedis(Integer redPacketId, Double unitAmount) {
         log.info("----------开始保存数据----------------");
         long start = System.currentTimeMillis();
-        BoundListOperations ops = redisTemplate.boundListOps(PREFIX + redPacketId);
+        BoundListOperations ops = redisTemplate.boundListOps(Contants.USER_RED_PACKET_PREFIX + redPacketId);
         Long SIZE = ops.size();
         if (SIZE == null || SIZE == 0) return;
         long times = SIZE % TIME_SIZE == 0 ? SIZE / TIME_SIZE : (SIZE / TIME_SIZE + 1);
@@ -85,14 +89,15 @@ public class RedisRedPacketServiceImpl implements RedisRedPacketService {
                 }
             }
         }
-        redisTemplate.delete(PREFIX + redPacketId);
+        redisTemplate.delete(Contants.RED_PACKET_PREFIX + redPacketId);
         long end = System.currentTimeMillis();
         System.out.println("保存数据结束，耗时" + (end - start) + "毫秒");
     }
 
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional
     public void save2DB(UserRedPacket userRedPacket) {
-        redPacketRepository.reduceStock(userRedPacket.getRedPacketId());
+        // 存在jpa更新问题，暂不处理
+        // redPacketRepository.reduceStock(userRedPacket.getRedPacketId());
         userRedPacketRepository.save(userRedPacket);
     }
 
