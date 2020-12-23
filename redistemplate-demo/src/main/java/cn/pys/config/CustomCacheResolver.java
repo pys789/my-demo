@@ -9,10 +9,7 @@ import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 自定义CacheResolver实现动态选择CacheManager
@@ -26,13 +23,7 @@ public class CustomCacheResolver implements CacheResolver, InitializingBean {
     @Nullable
     private List<CacheManager> cacheManagerList;
 
-    public CustomCacheResolver(){
-    }
-    public CustomCacheResolver(List<CacheManager> cacheManagerList){
-        this.cacheManagerList = cacheManagerList;
-    }
-
-    public void setCacheManagerList(@Nullable List<CacheManager> cacheManagerList) {
+    CustomCacheResolver(List<CacheManager> cacheManagerList) {
         this.cacheManagerList = cacheManagerList;
     }
 
@@ -41,7 +32,7 @@ public class CustomCacheResolver implements CacheResolver, InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet()  {
+    public void afterPropertiesSet() {
         Assert.notNull(this.cacheManagerList, "CacheManager is required");
     }
 
@@ -51,21 +42,19 @@ public class CustomCacheResolver implements CacheResolver, InitializingBean {
         if (cacheNames == null) {
             return Collections.emptyList();
         }
-        Collection<Cache> result = new ArrayList<>();
-        for(CacheManager cacheManager : getCacheManagerList()){
+        for (CacheManager cacheManager : getCacheManagerList()) {
             for (String cacheName : cacheNames) {
                 Cache cache = cacheManager.getCache(cacheName);
-                if (cache == null) {
-                    throw new IllegalArgumentException("Cannot find cache named '" +
-                            cacheName + "' for " + context.getOperation());
+                if (cache != null) {
+                    Set<Cache> singleton = Collections.singleton(cache);
+                    return singleton;
                 }
-                result.add(cache);
             }
         }
-        return result;
+        return null;
     }
 
-    private Collection<String> getCacheNames(CacheOperationInvocationContext<?> context){
+    private Collection<String> getCacheNames(CacheOperationInvocationContext<?> context) {
         return context.getOperation().getCacheNames();
     }
 }

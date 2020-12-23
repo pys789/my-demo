@@ -14,7 +14,9 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name="t_user")
-public class User {
+public class User implements Serializable{
+
+    private static final long serialVersionUID = -5081844604679854080L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

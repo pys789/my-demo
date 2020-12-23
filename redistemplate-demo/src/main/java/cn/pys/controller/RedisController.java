@@ -54,6 +54,22 @@ public class RedisController {
         return user;
     }
 
+    /**
+     * 测试从本地缓存ehcache获取
+     */
+    @GetMapping("/local")
+    public User local() {
+        return userService.local();
+    }
+
+    /**
+     * 测试从ehcache和redis保存和查询
+     */
+    @GetMapping("/both")
+    public String both() {
+        return userService.both();
+    }
+
     @GetMapping("/getAll")
     public List<User> getAllUser() {
         return userService.getAll();

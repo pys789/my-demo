@@ -12,6 +12,12 @@ spring:
         max-active: 2000
         max-wait: 1000
 
+  cache:
+    ehcache:
+      config: ehcache.xml
+    type: ehcache
+
+
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,6 +29,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
 
 
 server:

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -27,6 +28,8 @@ import org.springframework.scripting.support.ResourceScriptSource;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description
@@ -38,6 +41,9 @@ import java.time.Duration;
 public class RedisCacheConfig extends CachingConfigurerSupport {
     @Resource
     private RedisConnectionFactory factory;
+
+    @Resource
+    private EhCacheCacheManager ehCacheCacheManager;
 
     /**
      * 自定义生成redis-key,没有定义key时使用这个方法生成key
@@ -58,8 +64,8 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
         // serializer 根据需要可以设置ObjectMapper
@@ -73,16 +79,14 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
     @Override
     public CacheResolver cacheResolver() {
-       /* // 通过Guava实现的自定义堆内存缓存管理器
-        CacheManager guavaCacheManager = new GuavaCacheManager();
-        CacheManager redisCacheManager = redisCacheManager();
+        CacheManager redisCacheManager = cacheManager();
         List<CacheManager> list = new ArrayList<>();
-        // 优先读取堆内存缓存
-        list.add(guavaCacheManager);
         // 堆内存缓存读取不到该key时再读取redis缓存
+        // 先添加ehcache，优先从ehcache查找
+        list.add(ehCacheCacheManager);
         list.add(redisCacheManager);
-        return new CustomCacheResolver(list);*/
-        return new SimpleCacheResolver(cacheManager());
+        return new CustomCacheResolver(list);
+        //return new SimpleCacheResolver(cacheManager());
     }
 
     @Bean
@@ -98,7 +102,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration cacheConfiguration =
                 RedisCacheConfiguration.defaultCacheConfig()
                         .disableCachingNullValues()
-                        .entryTtl(Duration.ofSeconds(30))
+                        .entryTtl(Duration.ofSeconds(90))
                         .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
         return RedisCacheManager.builder(factory)
                 .cacheDefaults(cacheConfiguration)
