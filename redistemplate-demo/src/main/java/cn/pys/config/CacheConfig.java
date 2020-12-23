@@ -37,10 +37,6 @@ import java.util.List;
 public class CacheConfig extends CachingConfigurerSupport {
     @Resource
     private RedisConnectionFactory factory;
-
-    @Resource
-    private EhCacheCacheManager ehCacheCacheManager;
-
     /**
      * 自定义生成redis-key,没有定义key时使用这个方法生成key
      */
