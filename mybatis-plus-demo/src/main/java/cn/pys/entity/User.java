@@ -20,8 +20,6 @@ public class User {
     @TableId(value = "id",type= IdType.AUTO)
     private Long id;
     private Integer userId;
-    private String name;
-    private Integer age;
-    private String email;
+    private FieldType name;
 }
 
