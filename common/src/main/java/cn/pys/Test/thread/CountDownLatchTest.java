@@ -1,4 +1,4 @@
-package cn.pys.Test;
+package cn.pys.Test.thread;
 
 import java.util.concurrent.CountDownLatch;
 
