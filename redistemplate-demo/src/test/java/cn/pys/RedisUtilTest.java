@@ -36,7 +36,6 @@ public class RedisUtilTest extends BaseTest {
         redisTemplateUtil.rightPush("red_packet_list_3","1-123");
         redisTemplateUtil.rightPush("red_packet_list_3","2-123");
         redisTemplateUtil.rightPush("red_packet_list_3","3-123");
-
         BoundListOperations<String, Object> ops = redisTemplate.boundListOps(Contants.USER_RED_PACKET_PREFIX + "3");
         List<Object> list = ops.range(0, 3);
         System.out.println(list);
