@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.pys.config.AutoConfig2
+  cn.pys.config.AutoConfig3

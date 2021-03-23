@@ -1,13 +1,14 @@
 package cn.pys;
 
 import cn.pys.annotation.AutoConfigAnno;
+import cn.pys.annotation.AutoSelectorConfigAnno;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @AutoConfigAnno
-//@AutoSelectorConfigAnno(isLinux = true)
+@AutoSelectorConfigAnno(isLinux = true)
 public class App {
 
     /**
