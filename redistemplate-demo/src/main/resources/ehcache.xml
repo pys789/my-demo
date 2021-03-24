@@ -18,19 +18,19 @@
             maxElementsInMemory="1000"
             overflowToDisk="false"
             diskPersistent="false"
-            timeToIdleSeconds="30"
-            timeToLiveSeconds="30"
+            timeToIdleSeconds="10"
+            timeToLiveSeconds="10"
             memoryStoreEvictionPolicy="LRU"/>
 
     <!-- 手动指定的缓存策略 -->
     <!-- 对不同的数据，缓存策略可以在这里配置多种 -->
     <cache
-            name="local"
+            name="user"
             eternal="false"
             maxElementsInMemory="1000"
             overflowToDisk="false"
             diskPersistent="false"
-            timeToIdleSeconds="30"
-            timeToLiveSeconds="30"
+            timeToIdleSeconds="20"
+            timeToLiveSeconds="20"
             memoryStoreEvictionPolicy="LRU"/>
 </ehcache>

@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.cache.interceptor.CacheErrorHandler;
+import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.support.CompositeCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -115,6 +116,16 @@ public class CacheConfig extends CachingConfigurerSupport {
         compositeCacheManager.setFallbackToNoOpCache(true);
         compositeCacheManager.afterPropertiesSet();
         return compositeCacheManager;
+    }
+
+    @Override
+    public CacheResolver cacheResolver() {
+        List<CacheManager> cacheManagers = new ArrayList<>();
+        // 优先读取ehcache
+        cacheManagers.add(ehCacheCacheManager());
+        cacheManagers.add(redisCacheManager());
+        return new CustomCacheResolver(cacheManagers);
+
     }
 
     @Bean

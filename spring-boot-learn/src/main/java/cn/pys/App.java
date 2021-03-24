@@ -2,9 +2,11 @@ package cn.pys;
 
 import cn.pys.annotation.AutoConfigAnno;
 import cn.pys.annotation.AutoSelectorConfigAnno;
+import cn.pys.beanInit.TestBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @AutoConfigAnno
@@ -28,7 +30,15 @@ public class App {
      */
 
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+        //SpringApplication.run(App.class, args);
+
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(App.class);
+
+        System.out.println("before get Bean");
+        context.getBean(TestBean.class);
+        System.out.println("after get bean");
     }
+
 
 }
