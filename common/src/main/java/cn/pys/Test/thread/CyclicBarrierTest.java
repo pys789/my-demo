@@ -5,13 +5,8 @@ import java.util.concurrent.CyclicBarrier;
 
 public class CyclicBarrierTest {
     public static void main(String[] args) throws InterruptedException {
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(5, new Runnable() {
-            // Barrier 做加法，await达到5次时执行下面的方法，其他线程继续执行
-            @Override
-            public void run() {
-                System.out.println("线程组执行结束");
-            }
-        });
+        // Barrier 做加法，await达到5次时执行下面的方法，其他线程继续执行
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(5, () -> System.out.println("线程组执行结束"));
         for (int i = 0; i < 5; i++) {
             new Thread(new readNum(i, cyclicBarrier)).start();
         }

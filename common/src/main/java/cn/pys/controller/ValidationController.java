@@ -7,6 +7,8 @@ import cn.pys.group.UpdateGroup;
 import cn.pys.utils.ValidatorUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @Description
  * @Date 2020/11/12 15:14
@@ -17,15 +19,13 @@ import org.springframework.web.bind.annotation.*;
 public class ValidationController {
 
     @PostMapping("/save/user")
-    public Res saveUser(@RequestBody UserEntity user) {
-        ValidatorUtils.validateEntity(user, AddGroup.class);
+    public Res saveUser(@Valid @RequestBody UserEntity user) {
         // 真实操作 ...
         return Res.ok();
     }
 
     @PostMapping("/update/user")
-    public Res updateUser(@RequestBody UserEntity user) {
-        ValidatorUtils.validateEntity(user, UpdateGroup.class);
+    public Res updateUser(@Valid @RequestBody UserEntity user) {
         // 真实操作 ...
         return Res.ok();
     }

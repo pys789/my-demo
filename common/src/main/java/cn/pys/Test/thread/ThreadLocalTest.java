@@ -3,8 +3,8 @@ package cn.pys.Test.thread;
 public class ThreadLocalTest {
 
     // 使用 ThreadLocal，子线程拿不到父线程设置的值
-    //public static ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>();
-    public static ThreadLocal<Integer> threadLocal = new InheritableThreadLocal<Integer>();
+    public static ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>();
+    //public static ThreadLocal<Integer> threadLocal = new InheritableThreadLocal<Integer>();
 
     public static void main(String args[]) throws InterruptedException {
         threadLocal.set(123);
