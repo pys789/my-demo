@@ -1,10 +1,8 @@
 package cn.pys.Test;
 
-import org.springframework.util.CollectionUtils;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * @Description
@@ -12,28 +10,53 @@ import java.util.TimeZone;
  * @Created by pengys
  */
 public class Test {
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("百丽");
-        list.add("百丽/BELLE's");
-        List<String> tmp = transformSingleQuotes(list);
 
-        System.out.println(String.join("','", list));
-        System.out.println(String.join("','", tmp));
 
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        if (nums == null) return null;
+        List<List<Integer>> list = new ArrayList<>();
+        if (nums.length == 0) return list;
+        dfs(list, nums, 0);
+        return list;
     }
 
-    public static List<String> transformSingleQuotes(List<String> list) {
-        List<String> ret = new ArrayList<>();
-        if (list!=null) {
-            for (String str : list) {
-                if (str.contains("'")) {
-                    ret.add(str.replaceAll("'", "''"));
-                } else {
-                    ret.add(str);
-                }
+    private void dfs(List<List<Integer>> list, int[] nums, int idx) {
+        if (idx == nums.length) {
+            List<Integer> result = new ArrayList<>();
+            for (int num : nums) {
+                result.add(num);
             }
+            list.add(result);
+            return;
         }
-        return ret;
+
+        for (int i = idx; i < nums.length; i++) {
+            if (isRepeat(nums, idx, i)) continue;
+            swap(nums, idx, i);
+            dfs(list, nums, idx + 1);
+            swap(nums, idx, i);
+        }
+
     }
+
+    private boolean isRepeat(int[] nums, int idx, int i) {
+        for (int j = idx; j < i; j++) {
+            if (nums[j] == nums[i]) return true;
+        }
+        return false;
+    }
+
+    private void swap(int[] nums, int idx, int i) {
+        if (idx == i) return;
+        int temp = nums[idx];
+        nums[idx] = nums[i];
+        nums[i] = temp;
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
+        Test t = new Test();
+        System.out.println(t.permuteUnique(new int[]{2, 2, 1, 1}));
+    }
+
 }
