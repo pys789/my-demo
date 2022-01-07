@@ -30,7 +30,7 @@ class PrintTask2{
     void increase() {
         if (num <= 100) {
             try {
-                lock.tryLock();
+                lock.lock();
                 condition.signal();
                 System.out.println(Thread.currentThread().getName() + ":" + num++);
                 condition.await();
