@@ -51,6 +51,6 @@ public class Solution17 {
 
     public static void main(String[] args) {
         Solution17 test = new Solution17();
-        System.out.println(test.letterCombinations(null));
+        System.out.println(test.letterCombinations("234"));
     }
 }

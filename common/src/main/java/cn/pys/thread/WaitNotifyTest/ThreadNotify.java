@@ -1,4 +1,4 @@
-package cn.pys.Test.thread.WaitNotifyTest;
+package cn.pys.thread.WaitNotifyTest;
 
 public class ThreadNotify {
 
