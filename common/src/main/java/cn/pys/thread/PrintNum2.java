@@ -1,6 +1,5 @@
 package cn.pys.thread;
 
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class PrintNum2 {
@@ -24,16 +23,13 @@ public class PrintNum2 {
 
 class PrintTask2{
     private ReentrantLock lock = new ReentrantLock();
-    private Condition condition = lock.newCondition();
     private int num = 1;
 
     void increase() {
         if (num <= 100) {
             try {
                 lock.lock();
-                condition.signal();
                 System.out.println(Thread.currentThread().getName() + ":" + num++);
-                condition.await();
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {

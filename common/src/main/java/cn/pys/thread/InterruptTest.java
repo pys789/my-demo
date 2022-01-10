@@ -27,7 +27,7 @@ public class InterruptTest {
 class MyThread extends Thread {
     @Override
     public  void run() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.println("i="+(i+1));
             if(this.isInterrupted()){
                 System.out.println("通过this.isInterrupted()检测到中断");
